@@ -1,0 +1,21 @@
+postgres:
+    image: postgres
+    environment:
+        - "POSTGRES_USER=taiga"
+        - "POSTGRES_DB=taiga"
+
+taigaback:
+    image: dougg/taiga-back
+    links:
+        - postgres:postgres
+    ports:
+        - "2080:8000"
+
+taigafront:
+    image: dougg/taiga-front
+    links:
+        - taigaback:taiga-back
+    ports:
+        - "8080:80"
+    environment:
+        - "BASE_URL=http://localhost:2080"
